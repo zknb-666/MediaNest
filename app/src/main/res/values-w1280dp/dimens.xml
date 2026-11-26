@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 桌面 1280px 档：网页端 @media (min-width:1280px) 对应布局 -->
+<resources>
+    <dimen name="player_pad_h">24dp</dimen>
+    <dimen name="player_control_h">48dp</dimen>
+    <dimen name="player_btn_min">48dp</dimen>
+    <dimen name="player_btn_text">16sp</dimen>
+    <dimen name="player_title_text">18sp</dimen>
+    <dimen name="player_progress_h">4dp</dimen>
+    <dimen name="player_gap">10dp</dimen>
+</resources>

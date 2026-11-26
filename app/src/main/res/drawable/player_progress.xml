@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方 176 播放器进度条：可见轨道高 14px、圆角 7px。
+     填充 #3F74C8（176 截图取色 #3F74C8）；轨道是白色低透明度叠加（截图反推 α≈0.14）。 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="#24FFFFFF" />
+            <corners android:radius="7px" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <solid android:color="#FF3F74C8" />
+                <corners android:radius="7px" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

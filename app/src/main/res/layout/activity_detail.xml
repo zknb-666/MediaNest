@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 顶部大图背景 + 返回 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="360dp">
+
+            <ImageView
+                android:id="@+id/detail_backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@color/surface" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#AA191919" />
+
+            <ImageButton
+                android:id="@+id/detail_back"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_btn_selector"
+                android:src="@drawable/ic_back"
+                android:scaleType="centerInside"
+                android:padding="14dp"
+                android:contentDescription="返回" />
+        </FrameLayout>
+
+        <!-- 详情主体 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/detail_poster"
+                android:layout_width="200dp"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/poster_normal"
+                android:background="@drawable/poster_card_selector" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="32dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:id="@+id/detail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text"
+                    android:textSize="42sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detail_meta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/text_muted"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/detail_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#FFF5C542"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/detail_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="64dp"
+                        android:background="@drawable/primary_btn_selector"
+                        android:drawableLeft="@drawable/ic_play"
+                        android:drawablePadding="12dp"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:text="@string/continue_play"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/detail_favorite"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@drawable/circle_btn_selector"
+                        android:src="@drawable/ic_favorite"
+                        android:scaleType="centerInside"
+                        android:padding="16dp"
+                        android:contentDescription="收藏" />
+
+                    <ImageButton
+                        android:id="@+id/detail_watched"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@drawable/circle_btn_selector"
+                        android:src="@drawable/ic_watched"
+                        android:scaleType="centerInside"
+                        android:padding="16dp"
+                        android:contentDescription="已看" />
+
+                    <ImageButton
+                        android:id="@+id/detail_more"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@drawable/circle_btn_selector"
+                        android:src="@drawable/ic_more"
+                        android:scaleType="centerInside"
+                        android:padding="16dp"
+                        android:contentDescription="更多" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 简介通栏：对齐网页端「按钮下方整行简介」 -->
+        <TextView
+            android:id="@+id/detail_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:textColor="@color/text_muted"
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp" />
+
+        <!-- 剧集区（TV 时显示） -->
+        <LinearLayout
+            android:id="@+id/detail_episodes_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/detail_season_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_btn"
+                android:padding="10dp"
+                android:textColor="@color/text"
+                android:textSize="16sp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:id="@+id/detail_episodes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

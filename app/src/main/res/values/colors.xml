@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 网页端取色（nas.example.com:5666/v 截图实测 2026-11-19） -->
+    <color name="web_nav_bg">#FF101010</color>        <!-- 左侧导航栏 -->
+    <color name="web_content_bg">#FF191919</color>    <!-- 主内容区 -->
+    <color name="web_nav_selected">#FF052A82</color>  <!-- 导航选中项深蓝 -->
+    <color name="web_blue">#FF0067FF</color>          <!-- 主品牌蓝/图标高亮 -->
+    <color name="web_blue_btn">#FF2E7BFF</color>      <!-- 主按钮蓝 -->
+    <color name="web_text">#FFF3F3F3</color>          <!-- 主文字 -->
+    <color name="web_text_secondary">#FFA0A0A0</color><!-- 次级文字/计数 -->
+    <color name="web_card_bg">#FF242424</color>       <!-- 卡片/圆形按钮底 -->
+    <color name="web_rating">#FFF5C542</color>        <!-- 评分黄 -->
+    <color name="web_progress">#FF2E7BFF</color>      <!-- 继续观看进度条 -->
+    <color name="web_divider">#FF2E2E2E</color>
+    <!-- 网页端 Semi Design 深色主题变量（从 CSS 源码提取） -->
+    <color name="player_brand">#FF3388FF</color>        <!-- brand-4 = 51,136,255 -->
+    <color name="player_focus_ring">#FF0066FF</color>   <!-- brand-5 = 0,102,255 -->
+    <color name="player_overlay">#B3000000</color>      <!-- overlay-bg #0009 -->
+    <color name="player_text_2">#99FFFFFF</color>       <!-- text-2 #fff9 -->
+    <color name="player_divider">#1AFFFFFF</color>      <!-- white-10 #ffffff1a -->
+    <!-- 官方播放器 OSD 展开面板（204 截图实测：胶囊取色 #EBEBEB，不透明） -->
+    <color name="osd_pill">#FFEBEBEB</color>            <!-- 聚焦标签的浅色胶囊 -->
+    <color name="osd_row_focus">#FFEBEBEB</color>       <!-- 聚焦列表行白底（204 实测 #EBEBEB） -->
+    <color name="osd_on_light">#FF1A1A1A</color>        <!-- 浅底上的深色文字 -->
+
+    <!-- 兼容旧代码的别名（保持原语义） -->
+    <color name="bg">@color/web_content_bg</color>
+    <color name="surface">@color/web_card_bg</color>
+    <color name="surface_focus">@color/web_nav_selected</color>
+    <color name="text">@color/web_text</color>
+    <color name="text_muted">@color/web_text_secondary</color>
+    <color name="accent">@color/web_blue</color>
+    <color name="focus">@color/web_blue</color>
+    <color name="danger">#FFFF8A80</color>
+    <color name="divider">@color/web_divider</color>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="add_server_host" type="id" />
+    <item name="add_server_port" type="id" />
+    <item name="add_server_https" type="id" />
+    <item name="add_server_type_fnos" type="id" />
+    <item name="add_server_type_jellyfin" type="id" />
+    <item name="detail_subtitle_dropdown" type="id" />
+    <item name="detail_audio_dropdown" type="id" />
+</resources>

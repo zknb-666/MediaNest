@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方飞牛 TV 启动页：全屏背景 + 居中 Logo + 底部版权。 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/boot_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000">
+
+    <ImageView
+        android:id="@+id/boot_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/official_splash_bg" />
+
+    <ImageView
+        android:id="@+id/boot_logo"
+        android:layout_width="580px"
+        android:layout_height="160px"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:src="@drawable/official_splash_logo" />
+
+    <TextView
+        android:id="@+id/boot_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="64px"
+        android:gravity="center"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/boot_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="50px"
+        android:text="@string/app_copy_right_str"
+        android:textColor="#59FFFFFF"
+        android:textSize="24px" />
+</FrameLayout>

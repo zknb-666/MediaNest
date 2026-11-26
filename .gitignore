@@ -1,0 +1,45 @@
+# Gradle / Android Studio
+.gradle/
+.idea/
+*.iml
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Build outputs
+build/
+*/build/
+buildtmp/
+*.apk
+*.ap_
+*.apk.idsig
+*.log
+
+# Signing and local secrets
+*.keystore
+.keystore/
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# libass source-build workspace
+app/src/main/jni/libass-build/src/
+app/src/main/jni/libass-build/build-*/
+app/src/main/jni/libass-build/install/
+
+# Local diagnostics
+.tmp-*
+tmp-*.png
+
+# AOCI agent host integration (machine-bound; do not commit)
+.aoci/
+.mcp.json
+.mcp.json.backup.*
+AGENTS.md
+aoci.code.txt
+aoci.meta.txt
+aoci.txt

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方聚焦标签胶囊：198×70 全圆角（半径 35），浅色底。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/osd_pill" />
+    <corners android:radius="35px" />
+</shape>

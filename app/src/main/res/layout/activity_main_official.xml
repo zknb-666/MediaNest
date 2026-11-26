@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF15171A"
+    android:clipChildren="false">
+
+    <ScrollView
+        android:id="@+id/content_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="171px"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:fillViewport="false"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/content_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- 顶栏最后绘制，兼容不支持 elevation 的 Android 4.2。 -->
+    <RelativeLayout
+        android:id="@+id/official_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="171px"
+        android:layout_gravity="top"
+        android:clipChildren="false">
+
+        <ImageView
+            android:id="@+id/official_logo"
+            android:layout_width="310px"
+            android:layout_height="85px"
+            android:layout_marginLeft="80px"
+            android:layout_marginTop="60px"
+            android:contentDescription="飞牛TV"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo" />
+
+        <!-- 按钮组右边缘固定 1657：聚焦项变宽时整组向左展开（官方实测行为）。 -->
+        <LinearLayout
+            android:id="@+id/official_top_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="60px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="263px"
+            android:layout_marginTop="72px"
+            android:clipChildren="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/btn_search"
+                android:layout_width="70px"
+                android:layout_height="60px"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="14px"
+                android:paddingRight="14px">
+
+                <TextView
+                    android:id="@+id/search_icon"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#CCFFFFFF" />
+
+                <TextView
+                    android:id="@+id/search_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/search"
+                    android:textColor="#FF15171A"
+                    android:textSize="36px"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_refresh"
+                android:layout_width="70px"
+                android:layout_height="60px"
+                android:layout_marginLeft="28px"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="14px"
+                android:paddingRight="14px">
+
+                <TextView
+                    android:id="@+id/refresh_icon"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#CCFFFFFF" />
+
+                <TextView
+                    android:id="@+id/refresh_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="刷新"
+                    android:textColor="#FF15171A"
+                    android:textSize="36px"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_user"
+                android:layout_width="70px"
+                android:layout_height="60px"
+                android:layout_marginLeft="28px"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="14px"
+                android:paddingRight="14px">
+
+                <TextView
+                    android:id="@+id/user_icon"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#CCFFFFFF" />
+
+                <TextView
+                    android:id="@+id/user_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#FF15171A"
+                    android:textSize="36px"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_settings"
+                android:layout_width="70px"
+                android:layout_height="60px"
+                android:layout_marginLeft="28px"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="14px"
+                android:paddingRight="14px">
+
+                <TextView
+                    android:id="@+id/settings_icon"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#CCFFFFFF" />
+
+                <TextView
+                    android:id="@+id/settings_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="设置"
+                    android:textColor="#FF15171A"
+                    android:textSize="36px"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/official_divider"
+            android:layout_width="1px"
+            android:layout_height="26px"
+            android:layout_marginLeft="1713px"
+            android:layout_marginTop="89px"
+            android:background="#33FFFFFF" />
+
+        <TextView
+            android:id="@+id/official_clock"
+            android:layout_width="106px"
+            android:layout_height="57px"
+            android:layout_marginLeft="1734px"
+            android:layout_marginTop="74px"
+            android:gravity="center"
+            android:text="--:--"
+            android:textColor="#FFFFFFFF"
+            android:textSize="36px" />
+    </RelativeLayout>
+
+    <!-- MainActivity 共用查找目标；官方主题没有左侧导航和旧顶栏标题。 -->
+    <TextView
+        android:id="@+id/top_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/top_server"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/nav_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone" />
+</FrameLayout>

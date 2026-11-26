@@ -1,0 +1,90 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace 'com.juying.medianest.app'
+    compileSdk 36
+    ndkVersion '16.1.4479499'
+
+    defaultConfig {
+        applicationId 'com.juying.medianest.app'
+        minSdk = Integer.parseInt(project.findProperty('fn.minSdk') ?: '16')
+        targetSdk = Integer.parseInt(project.findProperty('fn.targetSdk') ?: '27')
+        versionCode 1
+        versionName '1.0.0'
+
+        ndk {
+            // libass 只有 armeabi-v7a 产物；arm64 设备按 32 位兼容模式运行。
+            abiFilters 'armeabi-v7a'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    lint {
+        abortOnError false
+        disable 'ExpiredTargetSdkVersion', 'OldTargetApi', 'UnusedAttribute', 'HardcodedText'
+    }
+
+    // 两套内核（MediaPlayer / ExoPlayer 2.19.1），运行时按 SDK_INT 选择：
+    //   API 16+ → ExoPlayer 2.19.1
+    // MediaPlayer 为保底内核（151 无 media.codec 时只能走它）。
+    // 两者 minSdk 都 ≤ 16，清单不需要任何 overrideLibrary 放行；
+    // 方法数靠 R8 裁剪压回单 dex。
+    buildTypes {
+        debug {
+            // 方法数靠 R8 裁剪压回单 dex。
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packaging {
+        // native so 以未压缩方式打包；TCL API17 的 linker 要求 so 页对齐且不压缩。
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/jni/CMakeLists.txt'
+            version '3.22.1'
+        }
+    }
+}
+
+dependencies {
+    // 纯 Java、Java 5 字节码，兼容 minSdk 9
+    implementation 'com.eclipsesource.minimal-json:minimal-json:0.9.5'
+
+    // API 16+ 可用的最新 Conscrypt Android 版本；AAR 自带各 ABI 原生库。
+    implementation 'org.conscrypt:conscrypt-android:2.5.3'
+
+    // API 16+：ExoPlayer 2.19.1 —— 2.x 最后一个稳定版（官方已宣告 legacy 项目停止发布）。
+    // 后继 AndroidX Media3（最新 1.11.x）把 minSdk 提到 21，与本项目 minSdk 16 冲突，
+    // 因此 2.19.1 已是 minSdk 16 下可用的最高版本，无需 overrideLibrary。
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.19.1'
+}
+
+// Guava 版本锁定：强制 31.1-android（ExoPlayer 2.19.1 声明的原版本）。
+// 更高版本的 com.google.common.base.Charsets 直接用 java.nio.charset.StandardCharsets
+// （API 19），在 API 16-18 上会 NoClassDefFoundError，导致 ParsableByteArray 静态初始化即崩溃。
+configurations.configureEach {
+    resolutionStrategy {
+        force 'com.google.guava:guava:31.1-android'
+    }
+}

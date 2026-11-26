@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方 176 进度条圆点：18×18 圆，白色约 72% 不透明度（截图上压在草地/亮色上都取到 #CACACA）。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#B8FFFFFF" />
+</shape>

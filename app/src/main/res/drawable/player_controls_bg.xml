@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 对齐 .xgplayer .xgplayer-controls 的渐变：transparent -> #0000005e -> #000000bf -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:startColor="#00000000"
+        android:centerColor="#5E000000"
+        android:endColor="#BF000000" />
+</shape>

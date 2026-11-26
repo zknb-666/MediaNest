@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      minSdkVersion=16（Android 4.1 / Jelly Bean）：与 ExoPlayer 2.19.1 的声明一致，
+      工程内所有依赖的 minSdk 都 ≤ 16，清单不需要任何 overrideLibrary 放行。
+      targetSdkVersion=27：避免 Android 9+ 默认禁止明文 HTTP（局域网 NAS 多为 http://）。
+      详见 docs/COMPATIBILITY.md。
+    -->
+    <!--
+      两套内核运行时按 SDK_INT 与 MediaCodec 可用性选择，
+      ExoPlayer 2.19.1 优先，MediaPlayer 作为保底。
+    -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 本地字幕文件（PlayerActivity 的 subtitlePath 参数，支持 SRT/VTT/ASS） -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- 电视没有触摸屏，必须声明非必需，否则 TV 设备装不上 / 商店不展示 -->
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.hardware.wifi" android:required="false" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+
+    <application
+        android:name=".App"
+        android:label="@string/app_name"
+        android:banner="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        android:allowBackup="false">
+
+        <activity
+            android:name="com.juying.medianest.ui.BootstrapActivity"
+            android:label="@string/app_name"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.juying.medianest.ui.MainActivity" android:label="@string/title_library" />
+        <activity android:name="com.juying.medianest.ui.OfficialSearchActivity" android:label="@string/search"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.OfficialMoreActivity" android:label="更多"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.AboutActivity" android:label="关于聚映"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.OfficialSettingsActivity" android:label="设置"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.OfficialAccountActivity" android:label="账号管理"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.OfficialScanDeviceActivity" android:label="选择影视服务器"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.OfficialAddServerActivity" android:label="添加影视服务器"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.OfficialLoginActivity" android:label="登录"
+            android:configChanges="keyboard|keyboardHidden|navigation" />
+        <activity android:name="com.juying.medianest.ui.DetailActivity" android:label="@string/title_library" />
+        <activity android:name="com.juying.medianest.ui.PersonDetailActivity" android:label="人物" />
+        <activity
+            android:name="com.juying.medianest.ui.PlayerActivity"
+            android:label="@string/title_player"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+    </application>
+</manifest>

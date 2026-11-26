@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方 view_play_info 的「关闭」按钮（SelectableTextView）：默认 #B2525459，聚焦白色，圆角 62。 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFFFF" />
+            <corners android:radius="62px" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#B2525459" />
+            <corners android:radius="62px" />
+        </shape>
+    </item>
+</selector>

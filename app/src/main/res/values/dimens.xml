@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 左侧导航栏 -->
+    <dimen name="nav_width">200dp</dimen>
+    <dimen name="nav_item_height">56dp</dimen>
+    <!-- 海报卡片：适合远距离观看的大尺寸 -->
+    <dimen name="poster_w">150dp</dimen>
+    <dimen name="poster_h">220dp</dimen>
+    <!-- 首页横版卡片：320dp 在 1080p 电视上单卡近 1/3 屏宽、一屏只放得下 3 张，
+         收到 240dp 后一屏可见 4 张且留出清晰的卡间距。 -->
+    <dimen name="continue_w">240dp</dimen>
+    <!-- 240 - 左右各 8dp 内边距 = 224dp，正好 16:9 -->
+    <dimen name="continue_h">126dp</dimen>
+    <dimen name="library_w">240dp</dimen>
+    <!-- 四宫格拼图沿用原卡片 320:200 的比例 -->
+    <dimen name="library_h">150dp</dimen>
+    <!-- 顶部栏 -->
+    <dimen name="topbar_h">72dp</dimen>
+    <dimen name="circle_btn">48dp</dimen>
+    <!-- 播放器：默认值（小屏/桌面窗口）；大屏由 values-w1280dp / values-w1920dp 覆盖 -->
+    <dimen name="player_pad_h">16dp</dimen>
+    <dimen name="player_control_h">44dp</dimen>
+    <dimen name="player_btn_min">44dp</dimen>
+    <dimen name="player_btn_text">14sp</dimen>
+    <dimen name="player_title_text">16sp</dimen>
+    <dimen name="player_progress_h">4dp</dimen>
+    <dimen name="player_gap">10dp</dimen>
+</resources>

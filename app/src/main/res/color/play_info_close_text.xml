@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方「关闭」按钮文字：默认白色，聚焦 #101114。 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="#FF101114" />
+    <item android:color="#FFFFFFFF" />
+</selector>

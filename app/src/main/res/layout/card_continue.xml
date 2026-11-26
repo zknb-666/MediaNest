@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/continue_root"
+    android:layout_width="@dimen/continue_w"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/poster_card_selector"
+    android:focusable="true"
+    android:clickable="true"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/continue_h">
+
+        <ImageView
+            android:id="@+id/continue_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/poster_normal" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:background="#66FFFFFF">
+            <View
+                android:id="@+id/continue_progress"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/progress_fill" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/continue_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/text"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/continue_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/text_muted"
+        android:textSize="13sp" />
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 官方 bg_play_info（res/1l.xml）：solid #EB2B2D33，圆角 48，2px 边框 #26FFFFFF。
+     官方布局按 1920 宽 160dpi 设计（dp==px），这里统一用 px 保证像素一致。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#EB2B2D33" />
+    <corners android:radius="48px" />
+    <stroke
+        android:width="2px"
+        android:color="#26FFFFFF" />
+</shape>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 电视 1920px 大屏档：网页端 @media screen and (min-width:1920px) 对应布局 -->
+<resources>
+    <dimen name="player_pad_h">48dp</dimen>
+    <dimen name="player_control_h">56dp</dimen>
+    <dimen name="player_btn_min">56dp</dimen>
+    <dimen name="player_btn_text">18sp</dimen>
+    <dimen name="player_title_text">22sp</dimen>
+    <dimen name="player_progress_h">6dp</dimen>
+    <dimen name="player_gap">14dp</dimen>
+</resources>

@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 播放器控制层按 1920×1080 电视屏幕设计。
+     SurfaceView 直接放在根 FrameLayout 下，避免被父容器缩放。 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000">
+
+    <SurfaceView
+        android:id="@+id/player_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 中心播放/暂停图标：官方 iv_play_state [870,450][1050,630] 180×180。
+         暂停时显示，不聚焦不拦截（官方 focusable=false），Typeface 图标字体在代码里设置。 -->
+    <TextView
+        android:id="@+id/player_center_play"
+        android:layout_width="180px"
+        android:layout_height="180px"
+        android:layout_marginLeft="870px"
+        android:layout_marginTop="450px"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textSize="150px"
+        android:textColor="#FFFFFFFF"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/player_loading_indicator"
+        android:layout_width="240px"
+        android:layout_height="180px"
+        android:layout_gravity="center"
+        android:background="@drawable/player_seek_indicator_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/player_loading_spinner"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:src="@drawable/player_loading_spinner"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/player_loading"
+            android:layout_width="220px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16px"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:text="正在准备播放…"
+            android:textSize="20sp"
+            android:textColor="#CCFFFFFF"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- 字幕层：官方 204 实测（_o2/_o3 截图）字幕固定在画面底部，
+         OSD 展开时不位移、且被 OSD 渐变与标签行盖住——即字幕在 OSD 之下。
+         因此这里必须放在 osd_panel 之前，后添加的 osd_panel 才能绘制在字幕上层。 -->
+    <FrameLayout
+        android:id="@+id/player_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone" />
+
+    <!-- 控制层容器：官方 player_info_view + view_mask 合并。
+         从 y=237 渐变到底部（[0,237][1920,1080]），内部子控件按官方 bounds 绝对定位。 -->
+    <FrameLayout
+        android:id="@+id/osd_panel"
+        android:layout_width="match_parent"
+        android:layout_height="843px"
+        android:layout_marginTop="237px"
+        android:background="@drawable/player_controls_bg"
+        android:visibility="gone">
+
+        <!-- 集信息：官方 tv_episode [80,686][574,735]（宽度随文案），
+             内容为「第 6 季 · 第 1 集 · Steel Ball Run ·」 -->
+        <TextView
+            android:id="@+id/osd_meta"
+            android:layout_width="wrap_content"
+            android:layout_height="49px"
+            android:layout_marginLeft="80px"
+            android:layout_marginTop="449px"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="编码信息"
+            android:textSize="22sp"
+            android:textColor="#CCFFFFFF" />
+
+        <!-- 标题：官方 tv_title [80,743][666,848] → 相对面板 (80,506) 586×105 -->
+        <TextView
+            android:id="@+id/osd_title"
+            android:layout_width="586px"
+            android:layout_height="105px"
+            android:layout_marginLeft="80px"
+            android:layout_marginTop="506px"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="影片"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:textColor="@color/text" />
+
+        <!-- 进度条：官方 seekBar 容器 [0,848][1920,896]，可见轨道从 x=80 到 1840、
+             高约 8px（176 截图取色：填充 #3F74C8，轨道白色低透明度），
+             右端 18×18 白色圆点随进度移动。容器可聚焦（官方 seekBar focused=true）。 -->
+        <FrameLayout
+            android:id="@+id/player_progress_box"
+            android:layout_width="match_parent"
+            android:layout_height="48px"
+            android:layout_marginTop="611px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true">
+
+            <ProgressBar
+                android:id="@+id/player_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="14px"
+                android:layout_marginLeft="80px"
+                android:layout_marginRight="80px"
+                android:layout_gravity="center_vertical"
+                android:max="1000"
+                android:progress="0"
+                android:progressDrawable="@drawable/player_progress" />
+
+            <View
+                android:id="@+id/player_progress_knob"
+                android:layout_width="18px"
+                android:layout_height="18px"
+                android:layout_gravity="top|left"
+                android:layout_marginTop="15px"
+                android:layout_marginLeft="71px"
+                android:background="@drawable/player_progress_knob" />
+        </FrameLayout>
+
+        <!-- 时间：官方 tv_time [80,896][261,938] → 相对面板 (80,659) 181×42 -->
+        <TextView
+            android:id="@+id/player_time"
+            android:layout_width="wrap_content"
+            android:layout_height="42px"
+            android:layout_marginLeft="80px"
+            android:layout_marginTop="659px"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="00:00 / 00:00"
+            android:textSize="20sp"
+            android:textColor="@color/text" />
+
+        <!-- 一次性提示（快进/暂停/线路切换等），置于时间右侧，不占官方静态 bounds -->
+        <TextView
+            android:id="@+id/osd_notice"
+            android:layout_width="900px"
+            android:layout_height="42px"
+            android:layout_marginLeft="300px"
+            android:layout_marginTop="659px"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text=""
+            android:textSize="22sp"
+            android:textColor="@color/focus" />
+
+        <!-- 官方聚焦标签胶囊：198×70 全圆角（radius 35），相对 180×64 的标签槽
+             左右各外扩 9px、上下各外扩 3px（204 实测 x=759..956、y=554..622）。
+             单独成 View 而不是给标签设背景，避免改变标签自身 bounds。 -->
+        <View
+            android:id="@+id/osd_tab_pill"
+            android:layout_width="198px"
+            android:layout_height="70px"
+            android:background="@drawable/osd_tab_pill_bg"
+            android:visibility="gone" />
+
+        <!-- 标签行：官方 tab_view，每格 180×64，起始 [36,956]，间距 64 → 相对面板 y=719。
+             选集 36 / 自动 280 / 字幕 524 / 音频 768 / 倍速 1012 / 设置 1256 -->
+        <TextView android:id="@+id/btn_episodes" style="@style/PlayerControl"
+            android:text="选集"
+            android:background="@null"
+            android:layout_width="180px"
+            android:layout_height="64px"
+            android:textSize="26sp"
+            android:layout_marginLeft="36px"
+            android:layout_marginTop="719px"
+            android:visibility="gone" />
+        <TextView android:id="@+id/btn_quality" style="@style/PlayerControl"
+            android:text="自动"
+            android:background="@null"
+            android:layout_width="180px"
+            android:layout_height="64px"
+            android:textSize="26sp"
+            android:layout_marginLeft="280px"
+            android:layout_marginTop="719px" />
+        <TextView android:id="@+id/btn_subtitle" style="@style/PlayerControl"
+            android:text="字幕"
+            android:background="@null"
+            android:layout_width="180px"
+            android:layout_height="64px"
+            android:textSize="26sp"
+            android:layout_marginLeft="524px"
+            android:layout_marginTop="719px" />
+        <TextView android:id="@+id/tab_audio" style="@style/PlayerControl"
+            android:text="音频"
+            android:background="@null"
+            android:layout_width="180px"
+            android:layout_height="64px"
+            android:textSize="26sp"
+            android:layout_marginLeft="768px"
+            android:layout_marginTop="719px" />
+        <TextView android:id="@+id/tab_speed" style="@style/PlayerControl"
+            android:text="倍速"
+            android:background="@null"
+            android:layout_width="180px"
+            android:layout_height="64px"
+            android:textSize="26sp"
+            android:layout_marginLeft="1012px"
+            android:layout_marginTop="719px" />
+        <TextView android:id="@+id/btn_settings" style="@style/PlayerControl"
+            android:text="设置"
+            android:background="@null"
+            android:layout_width="180px"
+            android:layout_height="64px"
+            android:textSize="26sp"
+            android:layout_marginLeft="1256px"
+            android:layout_marginTop="719px" />
+
+        <!-- 官方 tab_page_view：焦点落到标签行时展开——标签行整体上移到 y=556，
+             内容区 [0,636][1920,1080]（相对面板 top=237 → marginTop 399）。
+             204 实测：内容区没有整幅硬遮罩，变暗来自 osd_panel 自带渐变；
+             列表 [385,636][1535,1080] 本身无底色；行高 80、行距 88，行自带浅色半透明底。 -->
+        <FrameLayout
+            android:id="@+id/osd_tab_content"
+            android:layout_width="1920px"
+            android:layout_height="444px"
+            android:layout_marginLeft="0px"
+            android:layout_marginTop="399px"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/osd_tab_list"
+                android:layout_width="1150px"
+                android:layout_height="444px"
+                android:layout_marginLeft="385px"
+                android:orientation="vertical" />
+
+            <!-- 官方 fragment_subtitle 左列：选择字幕 / 调整字幕（400×80，间距 8，
+                 距内容区左 80、上 40）。打开字幕页时右列表右移让出这一列。 -->
+            <LinearLayout
+                android:id="@+id/osd_sub_left"
+                android:layout_width="400px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80px"
+                android:layout_marginTop="40px"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/osd_sub_tab_select"
+                    android:layout_width="400px"
+                    android:layout_height="80px"
+                    android:background="#17FFFFFF"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="36px"
+                    android:paddingRight="36px"
+                    android:text="选择字幕"
+                    android:textColor="@color/text"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/osd_sub_tab_adjust"
+                    android:layout_width="400px"
+                    android:layout_height="80px"
+                    android:layout_marginTop="8px"
+                    android:background="#17FFFFFF"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="36px"
+                    android:paddingRight="36px"
+                    android:text="调整字幕"
+                    android:textColor="@color/text"
+                    android:textSize="26sp" />
+            </LinearLayout>
+
+            <!-- 选集页（204 实测）：顶部「共 N」[40,677][883,726]，
+                 右侧翻页箭头 [1758,672][1816,731] / [1818,672][1876,731]，
+                 数字格每行 15 个，最多两行；格子宽度与间距按可用宽度调整。 -->
+            <TextView
+                android:id="@+id/osd_ep_header"
+                android:layout_width="wrap_content"
+                android:layout_height="49px"
+                android:layout_marginLeft="40px"
+                android:layout_marginTop="41px"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textSize="22sp"
+                android:textColor="@color/text"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/osd_ep_prev"
+                android:layout_width="58px"
+                android:layout_height="59px"
+                android:layout_marginLeft="1758px"
+                android:layout_marginTop="36px"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="‹"
+                android:textSize="30sp"
+                android:textColor="@color/text"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/osd_ep_next"
+                android:layout_width="58px"
+                android:layout_height="59px"
+                android:layout_marginLeft="1818px"
+                android:layout_marginTop="36px"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="›"
+                android:textSize="30sp"
+                android:textColor="@color/text"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/osd_ep_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="42px"
+                android:layout_marginRight="42px"
+                android:layout_marginTop="124px"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+            <!-- 设置页（204 实测）：左列参数组 [80,676][480,1040]（图标 40 + 文字，
+                 行距 88），右列子项 [520,676][1840,1040]。 -->
+            <!-- 左列同样是 364px 高的固定可视区（官方 ScrollView [80,676][480,1040]）：
+                 5 组共 440px，焦点移到最后一组时整体上移，否则「高级」只剩 12px 露在屏内。 -->
+            <FrameLayout
+                android:id="@+id/osd_set_left_clip"
+                android:layout_width="400px"
+                android:layout_height="364px"
+                android:layout_marginLeft="80px"
+                android:layout_marginTop="40px"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/osd_set_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="440px"
+                    android:orientation="vertical" />
+            </FrameLayout>
+
+            <!-- 右列固定可视区 1320×364（[520,676][1840,1040]）：内容超一屏时整体上移，
+                 裁切必须留在这一层，否则平移会把裁剪区一起带走、末行永远画不出来。 -->
+            <FrameLayout
+                android:id="@+id/osd_set_right_clip"
+                android:layout_width="1320px"
+                android:layout_height="364px"
+                android:layout_marginLeft="520px"
+                android:layout_marginTop="40px"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/osd_set_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="640px"
+                    android:orientation="vertical" />
+            </FrameLayout>
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <!-- 官方播放错误面板（_of_err.xml 逐像素复刻）：全屏 FrameLayout 覆盖视频层，
+         内部 LinearLayout 垂直三行：图标 → 错误消息 → 重试/退出按钮栏。
+         默认 gone，只有 fatal/error 时显示；默认焦点在「退出」按钮。 -->
+    <FrameLayout
+        android:id="@+id/play_error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FF000000"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/ll_normal_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 错误图标：官方 iv_normal_error [820,275][1100,555] 280×280 -->
+            <ImageView
+                android:id="@+id/iv_normal_error"
+                android:layout_width="280px"
+                android:layout_height="280px"
+                android:layout_marginLeft="820px"
+                android:layout_marginTop="275px"
+                android:src="@drawable/official_net_error"
+                android:contentDescription="@null" />
+
+            <!-- 错误消息：官方 tv_error_msg [0,595][1920,644] 全宽 49px 高 -->
+            <TextView
+                android:id="@+id/tv_error_msg"
+                android:layout_width="match_parent"
+                android:layout_height="49px"
+                android:layout_marginTop="40px"
+                android:gravity="center"
+                android:text="未知错误"
+                android:textSize="36sp"
+                android:textColor="#CCFFFFFF" />
+
+            <!-- 按钮栏：官方 [0,724][1920,804] 80px 高。
+                 用 FrameLayout 绝对定位让 bounds 和官方逐像素一致：
+                 retry [740,724][944,804] 204×80 / exit [966,724][1190,804] 224×80，
+                 view_space [944,763][976,764] 32×1 垂直居中。 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="80px"
+                android:layout_marginTop="80px">
+
+                <TextView
+                    android:id="@+id/tv_retry"
+                    android:layout_width="204px"
+                    android:layout_height="80px"
+                    android:layout_marginLeft="740px"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:clickable="true"
+                    android:text="重试"
+                    android:textSize="28sp"
+                    android:textColor="#CCFFFFFF" />
+
+                <View
+                    android:layout_width="32px"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="944px"
+                    android:layout_marginTop="39px" />
+
+                <TextView
+                    android:id="@+id/tv_exit"
+                    android:layout_width="224px"
+                    android:layout_height="80px"
+                    android:layout_marginLeft="966px"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:clickable="true"
+                    android:text="退出"
+                    android:textSize="28sp"
+                    android:textColor="#CCFFFFFF" />
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 官方播放信息浮层（view_play_info）：居中圆角面板，标题右侧「关闭」按钮。
+         放在最上层：开启后覆盖在 OSD/错误面板之上，唯一可聚焦控件是「关闭」。
+         列宽 258/258/1(+40)/286/286/286 按官方 1920 设计值；行内容由 Java 动态填充。 -->
+    <FrameLayout
+        android:id="@+id/play_info_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/play_info_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/play_info_bg"
+            android:orientation="vertical"
+            android:padding="32px">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/play_info_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="播放信息"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="28px"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="0px"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/play_info_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="64px"
+                    android:background="@drawable/play_info_close_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:paddingLeft="48px"
+                    android:paddingRight="48px"
+                    android:text="关闭"
+                    android:textColor="@color/play_info_close_text"
+                    android:textSize="28px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/play_info_columns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/player_seek_indicator"
+        android:layout_width="240px"
+        android:layout_height="180px"
+        android:layout_gravity="center"
+        android:background="@drawable/player_seek_indicator_bg"
+        android:focusable="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/player_seek_icon"
+                android:layout_width="64px"
+                android:layout_height="64px"
+                android:src="@drawable/ic_seek_forward" />
+
+            <TextView
+                android:id="@+id/player_seek_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="快进 10 秒"
+                android:textSize="28px"
+                android:textColor="#FFFFFFFF" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 官方字幕调整弹窗容器（dialog_subtitle_adjust_offset/size/position）：
+         偏移/位置在右下角 437×300 面板，大小在右侧 260×520 列表，内容由 Java 动态构建。 -->
+    <FrameLayout
+        android:id="@+id/sub_adjust_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/sub_adjust_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="40px"
+            android:layout_marginBottom="40px"
+            android:background="@drawable/play_info_bg"
+            android:orientation="vertical"
+            android:padding="32px" />
+    </FrameLayout>
+</FrameLayout>

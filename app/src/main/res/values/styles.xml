@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 只用 API 1 就存在的系统主题，不依赖 AppCompat / Leanback 库 -->
+    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="TvBigText">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="TvSmallText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_muted</item>
+    </style>
+
+    <!-- 播放器底部控制栏按钮：遥控器可聚焦，聚焦时由 focus_frame 高亮 -->
+    <style name="PlayerControl">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/player_control_h</item>
+        <item name="android:minWidth">@dimen/player_btn_min</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/player_btn_text</item>
+        <item name="android:textColor">@color/web_text</item>
+        <item name="android:background">@drawable/player_control_focus</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_marginLeft">@dimen/player_gap</item>
+    </style>
+
+    <style name="TvButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:background">@drawable/focus_frame</item>
+        <item name="android:focusable">true</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lib_root"
+    android:layout_width="@dimen/library_w"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/poster_card_selector"
+    android:focusable="true"
+    android:clickable="true"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/library_h"
+        android:orientation="horizontal">
+
+        <ImageView android:id="@+id/lib_img1" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:scaleType="centerCrop" android:src="@drawable/poster_normal" />
+        <ImageView android:id="@+id/lib_img2" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:scaleType="centerCrop" android:src="@drawable/poster_normal" />
+        <ImageView android:id="@+id/lib_img3" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:scaleType="centerCrop" android:src="@drawable/poster_normal" />
+        <ImageView android:id="@+id/lib_img4" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:scaleType="centerCrop" android:src="@drawable/poster_normal" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lib_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/text"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+</LinearLayout>
